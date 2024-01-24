@@ -18,6 +18,13 @@ class Member extends ActiveRecord
     public function user() {
         return User::findOne($this->user_id);
     }
+
+    // public static function findAll(){
+    //     $query = self::find();
+
+    //     return $query->all();
+    // }
+
     public function activeBorrowing() {
         return Borrowing::findOne(['member_id' => $this,'state'=>true]);
     }

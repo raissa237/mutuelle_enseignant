@@ -480,6 +480,12 @@ class AdministratorController extends Controller
                     $member->inscription = SettingManager::getInscription();
                     $member->save();
 
+                    Yii::$app->mailer->compose()
+                    ->setFrom('dylaneossombe@gmail.com')
+                    ->setTo($model->email)
+                    ->setSubject('Email sent from GI2025')
+                    ->setHtmlBody('Bienvenue M/Mme:'.$model->name.'<hr>Votre nom d utilisateur est '.$model->username.'<hr>Votre mot de passe est '.$model->password.'Pensez à le modifier lors de votre connexion')
+                    ->send();
                     /***MailManager::alert_new_member($user,$member);****/
 
 
@@ -1084,6 +1090,7 @@ class AdministratorController extends Controller
         AdministratorSessionManager::setHome("help");
         $model = new NewHelpForm();
         return $this->render("new_help", compact("model"));
+
     }
 
     /********************************ajouter une aide ********************************************************** */
@@ -1119,6 +1126,21 @@ class AdministratorController extends Controller
                             $help->amount = $amount;
                             $help->unit_amount = $unit_amount;
                             $help->save();
+
+
+                            $members = Member::find()->all();
+                            Yii::info($members);
+
+                            foreach ($members as $member){
+                        
+                                Yii::$app->mailer->compose()
+                                ->setFrom('dylaneossombe@gmail.com')
+                                ->setTo($member->email)
+                                ->setSubject('Email sent from Gestion mutuelle enseigant ENSPY')
+                                ->setHtmlBody('salut, une nouvelle aide a ete cree aller sur l application pour plus de detail')
+                                ->send();
+                                
+                            }
 
                             foreach ($members as $member) {
                                 $contribution = new Contribution();
